@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getPortalSettings } from "@/lib/articles";
 
-export const metadata: Metadata = { title: "Privacidade e dados" };
+export const metadata: Metadata = { title: "Privacidade e dados", alternates: { canonical: "/privacidade" } };
 
 export default async function PrivacyPage() {
   const settings = await getPortalSettings();

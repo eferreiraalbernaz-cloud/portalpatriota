@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: article.title,
     description: article.subtitle || article.body.slice(0, 155),
     alternates: { canonical: url },
-    openGraph: { type: "article", url, title: article.title, description: article.subtitle || article.body.slice(0, 155), publishedTime: article.published_at || undefined, images: article.image_url ? [{ url: article.image_url }] : undefined },
+    openGraph: { type: "article", url, title: article.title, description: article.subtitle || article.body.slice(0, 155), publishedTime: article.published_at || undefined, modifiedTime: article.updated_at, images: article.image_url ? [{ url: article.image_url }] : undefined },
     twitter: { card: "summary_large_image", title: article.title, description: article.subtitle || article.body.slice(0, 155), images: article.image_url ? [article.image_url] : undefined },
   };
 }
@@ -37,7 +37,7 @@ function structuredData(article: { title: string; subtitle: string | null; body:
     inLanguage: "pt-BR",
     mainEntityOfPage: `${getSiteUrl()}/${category?.slug || "brasil"}/${article.slug}`,
     author: { "@type": "Organization", name: "Portal Patriota BR" },
-    publisher: { "@type": "Organization", name: "Portal Patriota BR", logo: { "@type": "ImageObject", url: `${getSiteUrl()}/brand/portal-patriota-br.png` } },
+    publisher: { "@type": "Organization", name: "Portal Patriota BR", logo: { "@type": "ImageObject", url: `${getSiteUrl()}/brand/logo-oficial.png` } },
   };
 }
 

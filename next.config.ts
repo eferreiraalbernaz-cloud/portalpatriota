@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Keep verification and SEO metadata in the initial HTML head for every client.
+  htmlLimitedBots: /.*/,
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {
@@ -12,7 +14,7 @@ const nextConfig: NextConfig = {
         { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
       ],
-    }];
+    }, { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] }];
   },
 };
 

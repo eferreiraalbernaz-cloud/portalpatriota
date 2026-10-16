@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category: slug } = await params;
   const category = categoryBySlug(slug);
   if (!category) return { title: "Página não encontrada" };
-  return { title: `${category.label} — Notícias`, description: `Acompanhe as notícias de ${category.label} no Portal Patriota BR.` };
+  return { alternates: { canonical: `/${category.slug}` }, title: `${category.label} — Notícias`, description: `Acompanhe as notícias de ${category.label} no Portal Patriota BR.` };
 }
 
 export default async function CategoryPage({ params }: Props) {
