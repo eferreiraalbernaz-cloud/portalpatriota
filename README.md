@@ -100,4 +100,3 @@ O fluxo do primeiro administrador deve ser executado somente após o deploy de p
 Esta entrega contém a implementação, schema e documentação, mas não contém credenciais reais, projeto Supabase conectado, app Meta aprovado, conta Instagram autorizada, chave OpenAI ou domínio. Portanto, a sincronização real, autenticação de produção e publicação com dados reais só estarão ativas depois da configuração descrita acima. Não há scraping, notícias fictícias nem credenciais embutidas.
 
 O cron importa mídia de até três páginas (300 itens) por rodada e drena a fila de redação em lotes curtos para respeitar o tempo das funções. O modelo pode errar; a camada editorial reduz o risco e envia casos incompletos para revisão, mas a revisão humana continua necessária para manter padrão jornalístico.
-

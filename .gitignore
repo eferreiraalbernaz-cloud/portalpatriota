@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
+out/
+build/
+coverage/
+work/
+outputs/
+.pnpm-store/
+.env
+.env.*
+!.env.example
+*.log
+.vercel/
+*.tsbuildinfo
