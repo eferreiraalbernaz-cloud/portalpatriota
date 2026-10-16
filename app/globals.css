@@ -241,7 +241,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .login-back { color: #7a8798; font-size: 11px; }
 .login-back:hover { color: var(--blue); }
 .login-brand { margin-top: 28px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-.login-brand img { width: 83px; height: 67px; object-fit: contain; border-radius: 50%; background: white; }
+.login-brand img { width: 200px; height: 84px; max-width: 100%; object-fit: cover; background: white; }
 .login-brand > span { color: var(--blue); font-size: 8px; font-weight: 800; letter-spacing: .15em; }
 .login-heading { margin: 47px 0 26px; }
 .login-heading h1 { margin: 8px 0 12px; color: var(--navy); font-family: var(--display); font-size: 43px; font-weight: 800; line-height: .99; letter-spacing: -.07em; }
