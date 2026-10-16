@@ -47,11 +47,11 @@ O acesso ao painel verifica a sessão Supabase e a associação em `admin_users`
 O código usa **Instagram API with Instagram Login** e não faz scraping. A conta precisa ser profissional (Business ou Creator), o aplicativo da Meta precisa ter o produto Instagram Login habilitado e o callback deve corresponder exatamente ao cadastrado no painel da Meta.
 
 1. Crie/configure um app no [Meta for Developers](https://developers.facebook.com/) e adicione Instagram API with Instagram Login.
-2. Cadastre a URL `https://SEU_DOMINIO/api/instagram/callback` em OAuth Redirect URIs e em `META_REDIRECT_URI`; use o endereço localhost cadastrado no Supabase apenas no ambiente de desenvolvimento.
+2. Cadastre em OAuth Redirect URIs a URL de retorno exibida no painel **Configurações → Configuração de APIs**. Ela usa o endereço público definido em `NEXT_PUBLIC_SITE_URL`; não é preciso editar uma variável `META_REDIRECT_URI`.
 3. Solicite a permissão mínima de leitura `instagram_business_basic` para buscar perfil e publicações. O app precisa passar pela análise/acesso avançado da Meta para uso fora de contas de teste. Adicione a conta do proprietário como tester durante a configuração.
 4. O responsável técnico deve definir `APP_SECRETS_ENCRYPTION_KEY` uma única vez no servidor. Gere com `openssl rand -base64 32` e mantenha a mesma chave em todos os deploys. Essa chave protege os segredos de API e tokens Meta gravados no banco. Se for perdida, será preciso inserir as chaves de API e reconectar o Instagram.
 5. O administrador pode abrir **Configurações → Configuração de APIs**, informar o App ID e o App Secret, e salvar. O painel mostra a URL de retorno OAuth, derivada de `NEXT_PUBLIC_SITE_URL`, para copiar para a Meta. Os campos secretos ficam vazios depois de salvar; deixar em branco mantém a chave atual. Depois use **Conectar Instagram** para autorizar o perfil profissional. Não copie tokens para o navegador ou para o Git.
-6. A rota `/api/cron/automation` consulta a API oficial a cada 15 minutos no agendamento Vercel incluído. Ela importa até 300 publicações recentes por execução, evita duplicatas pelo ID da mídia e processa uma fila curta por rodada. Se a conta desconectar ou a renovação falhar, o painel informa que a autorização precisa ser refeita.
+6. A rota `/api/cron/automation` consulta a API oficial a cada 15 minutos no agendamento Vercel incluído. Em outros provedores, configure o cron equivalente para chamar essa rota com o segredo `CRON_SECRET`. Ela importa até 300 publicações recentes por execução, evita duplicatas pelo ID da mídia e processa uma fila curta por rodada. Se a conta desconectar ou a renovação falhar, o painel informa que a autorização precisa ser refeita.
 
 O fluxo pede somente leitura de perfil e mídia; não pede permissão para publicar no Instagram. A publicação tratada por este portal acontece no próprio site. A frequência real do cron depende do plano e dos limites do provedor; confirme a disponibilidade de cron a cada 15 minutos e de funções com tempo de execução compatível com pesquisa de IA. O botão de sincronização manual está no painel.
 
@@ -79,10 +79,10 @@ O dashboard deixa explícito quando analytics não está configurado. Nenhuma vi
 
 ## 6. Deploy e domínio
 
-1. Envie o projeto a um repositório Git e conecte-o ao provedor de hospedagem. Para implantação Cloudflare Pages com o subdomínio `*.pages.dev`, a aplicação precisa ser uma exportação estática; este portal usa Next.js servidor para autenticação, APIs e automação. Para a aplicação completa, use a implantação Next.js em Cloudflare Workers (subdomínio `*.workers.dev`) ou um provedor Next.js serverless, e configure o domínio correspondente.
+1. O repositório está configurado para Next.js em Vercel, incluindo a rota de cron. Cloudflare Pages em `*.pages.dev` hospeda aqui somente uma exportação estática; autenticação, painel, rotas de API e automação deste portal precisam de um runtime de servidor. Para manter o site completo na Cloudflare, implante-o em Workers (`*.workers.dev`) ou use um domínio próprio. Um proxy Pages para Worker pode preservar o sufixo `pages.dev`, mas exige dois projetos e um vínculo de serviço adicional.
 2. Defina as mesmas variáveis de ambiente necessárias em Production, Preview e Development, usando credenciais separadas para ambientes não produtivos.
 3. Execute as migrations do Supabase na ordem antes de liberar o tráfego. Configure `CRON_SECRET` no ambiente de hospedagem; o agendamento deve chamar a rota com esse segredo.
-4. Faça deploy. Em **Vercel → Settings → Domains**, adicione o domínio e aplique os registros DNS indicados. O domínio pode ser gerenciado pelo Cloudflare; mantenha proxy/DNS conforme o modo recomendado pelo Vercel e valide HTTPS.
+4. Faça deploy. Em Vercel, adicione o domínio em **Settings → Domains**; em Cloudflare Workers, configure um subdomínio `workers.dev` ou associe um domínio próprio ao Worker. Aplique os registros DNS indicados e valide HTTPS.
 5. Atualize `NEXT_PUBLIC_SITE_URL`, o redirect URI da Meta e as URLs do Supabase para o domínio definitivo. Reconecte a conta Instagram em produção.
 
 O fluxo do primeiro administrador deve ser executado somente após o deploy de produção e só uma vez. Não rode o bootstrap em Preview com o mesmo banco de produção.
@@ -100,3 +100,4 @@ O fluxo do primeiro administrador deve ser executado somente após o deploy de p
 Esta entrega contém a implementação, schema e documentação, mas não contém credenciais reais, projeto Supabase conectado, app Meta aprovado, conta Instagram autorizada, chave OpenAI ou domínio. Portanto, a sincronização real, autenticação de produção e publicação com dados reais só estarão ativas depois da configuração descrita acima. Não há scraping, notícias fictícias nem credenciais embutidas.
 
 O cron importa mídia de até três páginas (300 itens) por rodada e drena a fila de redação em lotes curtos para respeitar o tempo das funções. O modelo pode errar; a camada editorial reduz o risco e envia casos incompletos para revisão, mas a revisão humana continua necessária para manter padrão jornalístico.
+
