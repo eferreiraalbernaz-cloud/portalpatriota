@@ -73,7 +73,7 @@ O modelo e a ferramenta de pesquisa têm custos e limites próprios. Configure a
 - **Notícias:** criar, editar, destacar, alterar categoria, enviar imagem, publicar, agendar, arquivar, excluir ou reprocessar uma importação.
 - **Configurações:** selecionar redação curta/média/longa/desativada, pausar sincronização, ligar/desligar publicação automática, atualizar links institucionais e configurar as credenciais Meta/OpenAI sem voltar ao deploy.
 - **Revisão editorial:** matérias com verificação incompleta ficam pendentes; edite e publique manualmente quando estiverem corretas.
-- **Senha:** use “Esqueceu a senha?” no login; a redefinição usa o fluxo de e-mail do Supabase.
+- **Senha:** o acesso de produção solicita somente senha. Para recuperar o acesso da conta técnica, o responsável pela infraestrutura redefine a senha no Supabase Auth. Contas pessoais com e-mail válido ainda podem usar o fluxo de recuperação por e-mail.
 
 O dashboard deixa explícito quando analytics não está configurado. Nenhuma visita é rastreada por padrão. Registros operacionais de sincronização e processamento são retidos por 90 dias e removidos automaticamente pelo cron.
 
@@ -101,7 +101,7 @@ O OpenNext deve ser validado no runtime Workers; um build Next.js isolado não c
 
 Para domínio próprio, associe-o ao projeto Pages no painel Cloudflare e atualize NEXT_PUBLIC_SITE_URL no Worker e no build, a URL do Supabase Auth e o retorno OAuth cadastrado na Meta. A URL de retorno é exibida automaticamente no painel do portal.
 
-O fluxo do primeiro administrador deve ser executado somente em produção e uma única vez, após definir BOOTSTRAP_ADMIN_EMAIL e BOOTSTRAP_SECRET nos segredos do Worker. A senha não foi definida; o proprietário ainda está escolhendo o acesso. Não existe acesso administrativo público sem autenticação.
+O fluxo do primeiro administrador deve ser executado somente em produção e uma única vez, após definir BOOTSTRAP_ADMIN_EMAIL e BOOTSTRAP_SECRET nos segredos do Worker. O login de produção solicita somente a senha. A conta técnica é identificada por ADMIN_LOGIN_EMAIL (padrão painel@portalpatriotabr.invalid), sem envio de mensagens. A senha é armazenada como hash pelo Supabase Auth; nunca coloque a senha no código ou neste arquivo. Não existe acesso administrativo público sem autenticação.
 
 ## 7. Serviços que podem gerar custos
 
