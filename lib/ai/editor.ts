@@ -5,6 +5,8 @@ import type { ArticleSource, WritingMode } from "@/lib/types";
 import { getOpenAiCredentials } from "@/lib/integrations/provider-config";
 
 const CATEGORY_TERMS: Record<CategoryName, string[]> = {
+  "RIBEIRA DO POMBAL": ["ribeira do pombal", "pombalense", "pombalenses"],
+  "BAHIA": ["bahia", "baiano", "baiana", "baianos", "baianas"],
   "POLÍTICA": ["eleição", "eleições", "presidente", "governo", "senado", "senador", "deputado", "congresso", "ministro", "partido", "prefeito", "governador", "câmara", "parlamentar", "urna", "votação"],
   "BRASIL": ["brasil", "nacional", "economia", "educação", "trânsito", "chuva", "enchente", "cidade", "estado", "consumidor", "trabalhador", "imposto", "infraestrutura"],
   "SEGURANÇA": ["polícia", "policial", "crime", "criminoso", "assalto", "roubo", "homicídio", "investigação", "operação", "prisão", "preso", "suspeito", "violência", "segurança pública", "militar"],
@@ -14,6 +16,9 @@ const CATEGORY_TERMS: Record<CategoryName, string[]> = {
 
 export function classifyCategory(text: string): { category: CategoryName; ambiguous: boolean; reason: string | null } {
   const normalized = text.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  // Prefer an explicit local focus over the broader subject category.
+  if (/\bribeira do pombal\b/.test(normalized)) return { category: "RIBEIRA DO POMBAL", ambiguous: false, reason: null };
+  if (/\b(?:na|estado da|governo da|interior da|sul da|oeste da) bahia\b/.test(normalized)) return { category: "BAHIA", ambiguous: false, reason: null };
   const ranked = Object.entries(CATEGORY_TERMS).map(([category, terms]) => ({
     category: category as CategoryName,
     score: terms.reduce((total, term) => {
@@ -111,7 +116,7 @@ export async function writeNewsArticle(input: {
     "Não invente eventos, datas, falas, números, entrevistas nem atribuições. Não copie trechos de fontes. Diferencie fatos confirmados, alegações e opiniões.",
     "Se fontes confiáveis forem insuficientes, houver contradição relevante, ou a legenda não permitir identificar o fato, marque needs_review=true e explique o motivo. Não transforme dúvida em certeza.",
     `Produza uma matéria com ${WORD_TARGETS[input.mode]}; esta é uma meta aproximada, nunca preencha com repetição ou invenções.`,
-    "Escolha uma única categoria pela pauta predominante. BRASIL é a categoria padrão quando houver ambiguidade.",
+    "Escolha uma única categoria pela pauta predominante. Se o foco for a cidade de Ribeira do Pombal, use RIBEIRA DO POMBAL; se o foco for o estado da Bahia ou suas cidades, use BAHIA. Uma menção incidental ao local ou ao time Bahia não basta para classificar como notícia regional. Nas demais pautas use a editoria temática correspondente. BRASIL é a categoria padrão quando houver ambiguidade.",
     "Inclua somente fontes realmente abertas/encontradas pela pesquisa web desta resposta. Não crie links. Use ao menos duas fontes independentes quando disponíveis.",
   ].join("\n");
 

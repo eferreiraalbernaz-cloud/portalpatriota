@@ -50,17 +50,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .menu-button.is-active span:last-child { transform: translateY(-7px) rotate(-45deg); }
 .overlay { position: fixed; inset: 0; background: rgba(6, 25, 53, .32); z-index: 30; opacity: 0; visibility: hidden; transition: opacity .24s, visibility .24s; }
 .overlay.is-visible { opacity: 1; visibility: visible; }
-.side-menu { position: fixed; z-index: 31; top: 0; right: 0; bottom: 0; width: min(420px, 88vw); background: #fff; padding: 33px 40px; transform: translateX(102%); transition: transform .28s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; box-shadow: -20px 0 70px rgba(9,42,89,.11); }
+.side-menu { overflow-y: auto; overscroll-behavior: contain; position: fixed; z-index: 31; top: 0; right: 0; bottom: 0; width: min(420px, 88vw); background: #fff; padding: 33px 40px; transform: translateX(102%); transition: transform .28s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; box-shadow: -20px 0 70px rgba(9,42,89,.11); }
 .side-menu.is-open { transform: translateX(0); }
 .side-menu-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; border-bottom: 1px solid var(--line); }
 .side-menu-top .eyebrow { color: var(--muted); }
 .close-button { font-size: 28px; color: #6d7a8d; line-height: 1; }
-.menu-links { display: flex; flex-direction: column; padding-top: 10px; }
+.menu-links { flex-shrink: 0; display: flex; flex-direction: column; padding-top: 10px; }
 .menu-links a { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--line); color: var(--navy); font-family: var(--display); font-size: 18px; font-weight: 800; letter-spacing: -.03em; transition: color .2s, padding .2s; }
 .menu-links a:hover { color: var(--blue); padding-left: 6px; }
 .menu-links a small { color: #9aa5b4; font-size: 9px; letter-spacing: .12em; }
 .menu-links a:first-child { font-size: 14px; color: #53657c; }
-.side-menu-bottom { margin-top: auto; padding: 21px 0 2px; border-top: 1px solid var(--line); }
+.side-menu-bottom { flex-shrink: 0; margin-top: auto; padding: 21px 0 2px; border-top: 1px solid var(--line); }
 .side-menu-bottom span { display: block; margin-bottom: 9px; color: #a3adbb; font-size: 9px; font-weight: 700; letter-spacing: .15em; }
 .side-menu-bottom a { color: var(--blue); font-size: 12px; font-weight: 600; }
 .search-overlay { position: fixed; z-index: 40; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(5, 25, 52, .95); color: #fff; }
