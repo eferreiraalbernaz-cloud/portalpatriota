@@ -51,7 +51,7 @@ O código usa **Instagram API with Instagram Login** e não faz scraping. A cont
 3. Solicite a permissão mínima de leitura `instagram_business_basic` para buscar perfil e publicações. O app precisa passar pela análise/acesso avançado da Meta para uso fora de contas de teste. Adicione a conta do proprietário como tester durante a configuração.
 4. O responsável técnico deve definir `APP_SECRETS_ENCRYPTION_KEY` uma única vez no servidor. Gere com `openssl rand -base64 32` e mantenha a mesma chave em todos os deploys. Essa chave protege os segredos de API e tokens Meta gravados no banco. Se for perdida, será preciso inserir as chaves de API e reconectar o Instagram.
 5. O administrador pode abrir **Configurações → Configuração de APIs**, informar o App ID e o App Secret, e salvar. O painel mostra a URL de retorno OAuth, derivada de `NEXT_PUBLIC_SITE_URL`, para copiar para a Meta. Os campos secretos ficam vazios depois de salvar; deixar em branco mantém a chave atual. Depois use **Conectar Instagram** para autorizar o perfil profissional. Não copie tokens para o navegador ou para o Git.
-6. A rota `/api/cron/automation` consulta a API oficial a cada 15 minutos no agendamento Vercel incluído. Em outros provedores, configure o cron equivalente para chamar essa rota com o segredo `CRON_SECRET`. Ela importa até 300 publicações recentes por execução, evita duplicatas pelo ID da mídia e processa uma fila curta por rodada. Se a conta desconectar ou a renovação falhar, o painel informa que a autorização precisa ser refeita.
+6. A rota `/api/cron/automation` consulta a API oficial a cada 15 minutos pelo cron do Worker em produção. O arquivo vercel.json também oferece um agendamento alternativo para Vercel. Em outros provedores, configure o cron equivalente para chamar essa rota com o segredo `CRON_SECRET`. Ela importa até 300 publicações recentes por execução, evita duplicatas pelo ID da mídia e processa uma fila curta por rodada. Se a conta desconectar ou a renovação falhar, o painel informa que a autorização precisa ser refeita.
 
 O fluxo pede somente leitura de perfil e mídia; não pede permissão para publicar no Instagram. A publicação tratada por este portal acontece no próprio site. A frequência real do cron depende do plano e dos limites do provedor; confirme a disponibilidade de cron a cada 15 minutos e de funções com tempo de execução compatível com pesquisa de IA. O botão de sincronização manual está no painel.
 
@@ -79,13 +79,29 @@ O dashboard deixa explícito quando analytics não está configurado. Nenhuma vi
 
 ## 6. Deploy e domínio
 
-1. O repositório está configurado para Next.js em Vercel, incluindo a rota de cron. Cloudflare Pages em `*.pages.dev` hospeda aqui somente uma exportação estática; autenticação, painel, rotas de API e automação deste portal precisam de um runtime de servidor. Para manter o site completo na Cloudflare, implante-o em Workers (`*.workers.dev`) ou use um domínio próprio. Um proxy Pages para Worker pode preservar o sufixo `pages.dev`, mas exige dois projetos e um vínculo de serviço adicional.
-2. Defina as mesmas variáveis de ambiente necessárias em Production, Preview e Development, usando credenciais separadas para ambientes não produtivos.
-3. Execute as migrations do Supabase na ordem antes de liberar o tráfego. Configure `CRON_SECRET` no ambiente de hospedagem; o agendamento deve chamar a rota com esse segredo.
-4. Faça deploy. Em Vercel, adicione o domínio em **Settings → Domains**; em Cloudflare Workers, configure um subdomínio `workers.dev` ou associe um domínio próprio ao Worker. Aplique os registros DNS indicados e valide HTTPS.
-5. Atualize `NEXT_PUBLIC_SITE_URL`, o redirect URI da Meta e as URLs do Supabase para o domínio definitivo. Reconecte a conta Instagram em produção.
+A implantação de produção usa dois projetos Cloudflare vinculados ao mesmo repositório:
 
-O fluxo do primeiro administrador deve ser executado somente após o deploy de produção e só uma vez. Não rode o bootstrap em Preview com o mesmo banco de produção.
+- **Pages:** portalpatriotabr, endereço https://portalpatriotabr.pages.dev, código em cloudflare/pages/. O binding PORTAL encaminha as requisições ao servidor.
+- **Worker:** portalpatriotabr-app, aplicação Next.js completa adaptada pelo OpenNext. O arquivo wrangler.jsonc configura assets, logs, variáveis públicas e cron a cada 15 minutos.
+- **Supabase:** projeto portal-patriota-br, região São Paulo, referência dikhcnfoxzchsjgleoww.
+
+As alterações na branch main do GitHub iniciam um build Linux e o deploy do Worker automaticamente. Mudanças no diretório do proxy atualizam o Pages. Atualizações apenas no README não disparam o build do servidor.
+
+Comandos do servidor:
+
+~~~bash
+pnpm install --frozen-lockfile
+pnpm build:cloudflare
+pnpm deploy:cloudflare
+~~~
+
+Para outra implantação, configure primeiro as variáveis públicas do arquivo .env.example no build e no runtime. Cadastre SUPABASE_SECRET_KEY, APP_SECRETS_ENCRYPTION_KEY e CRON_SECRET como segredos do Worker. Não copie esses valores para o Git. As credenciais de Meta e IA são configuradas pelo administrador no painel e permanecem criptografadas no banco.
+
+O OpenNext deve ser validado no runtime Workers; um build Next.js isolado não confirma compatibilidade com esse runtime. No Windows, use o build Linux da Cloudflare ou WSL.
+
+Para domínio próprio, associe-o ao projeto Pages no painel Cloudflare e atualize NEXT_PUBLIC_SITE_URL no Worker e no build, a URL do Supabase Auth e o retorno OAuth cadastrado na Meta. A URL de retorno é exibida automaticamente no painel do portal.
+
+O fluxo do primeiro administrador deve ser executado somente em produção e uma única vez, após definir BOOTSTRAP_ADMIN_EMAIL e BOOTSTRAP_SECRET nos segredos do Worker. A senha não foi definida; o proprietário ainda está escolhendo o acesso. Não existe acesso administrativo público sem autenticação.
 
 ## 7. Serviços que podem gerar custos
 
@@ -97,7 +113,6 @@ O fluxo do primeiro administrador deve ser executado somente após o deploy de p
 
 ## 8. Estado de ativação e limitações conhecidas
 
-Esta entrega contém a implementação, schema e documentação, mas não contém credenciais reais, projeto Supabase conectado, app Meta aprovado, conta Instagram autorizada, chave OpenAI ou domínio. Portanto, a sincronização real, autenticação de produção e publicação com dados reais só estarão ativas depois da configuração descrita acima. Não há scraping, notícias fictícias nem credenciais embutidas.
+O projeto Supabase e a infraestrutura Cloudflare estão provisionados. As credenciais privadas de infraestrutura ficam nos segredos do Worker. A conta Instagram, a aprovação do aplicativo Meta, a chave de IA e o primeiro acesso administrativo ainda dependem dos dados do proprietário. Até essas etapas, a sincronização permanece pausada e a publicação automática desativada. Não há scraping, notícias fictícias nem credenciais privadas no repositório.
 
 O cron importa mídia de até três páginas (300 itens) por rodada e drena a fila de redação em lotes curtos para respeitar o tempo das funções. O modelo pode errar; a camada editorial reduz o risco e envia casos incompletos para revisão, mas a revisão humana continua necessária para manter padrão jornalístico.
-

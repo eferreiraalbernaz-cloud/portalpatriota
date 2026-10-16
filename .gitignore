@@ -11,6 +11,8 @@ work/
 outputs/
 .pnpm-store/
 .env
+.dev.vars
+.dev.vars.*
 .env.*
 !.env.example
 *.log
