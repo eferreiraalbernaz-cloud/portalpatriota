@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CATEGORIES } from "@/lib/categories";
 
 export function SiteHeader({ siteName, logoUrl }: { siteName: string; logoUrl: string }) {
+  const officialLogo = !logoUrl || logoUrl === "/brand/portal-patriota-br.png" || logoUrl === "/brand/logo-oficial.png";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -22,8 +23,7 @@ export function SiteHeader({ siteName, logoUrl }: { siteName: string; logoUrl: s
     <header className="site-header">
       <div className="header-inner">
         <Link className="brand" href="/" aria-label="Portal Patriota BR, página inicial">
-          <Image src={logoUrl || "/brand/portal-patriota-br.png"} alt="" width={82} height={64} priority className="brand-mark" />
-          <span className="brand-name">{siteName}</span>
+          <Image src={officialLogo ? "/brand/logo-oficial.png" : logoUrl} alt={siteName} width={200} height={84} priority className={`brand-mark${officialLogo ? " brand-mark-official" : ""}`} />
         </Link>
         <div className="header-tools">
           <button className="icon-button" aria-label="Abrir pesquisa" onClick={() => { setSearchOpen(true); setMenuOpen(false); }}>
