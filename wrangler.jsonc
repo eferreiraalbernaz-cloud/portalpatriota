@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "portalpatriotabr-app",
+  "main": "cloudflare/worker.js",
+  "compatibility_date": "2026-10-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "triggers": { "crons": ["*/15 * * * *"] },
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://portalpatriotabr.pages.dev",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://dikhcnfoxzchsjgleoww.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_RJk3uH4FjtN-UoWPGy_MoQ_mCxD_3Dv",
+    "META_GRAPH_API_VERSION": "v26.0"
+  }
+}

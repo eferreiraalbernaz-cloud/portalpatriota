@@ -1,6 +1,7 @@
 node_modules/
 .next/
 .open-next/
+cloudflare/pages/dist/
 .wrangler/
 cloudflare-env.d.ts
 out/
