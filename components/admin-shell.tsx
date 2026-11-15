@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "./admin-shell.css";
 import { LogoutButton } from "@/components/admin-actions";
 
 export function AdminShell({ email, children, title, eyebrow = "PAINEL ADMINISTRATIVO" }: { email: string; children: React.ReactNode; title: string; eyebrow?: string }) {

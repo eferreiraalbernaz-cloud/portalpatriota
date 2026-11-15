@@ -1,0 +1,5 @@
+@media(max-width:760px){
+ .admin-area .admin-sidebar{height:auto;min-height:54px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));justify-content:initial;gap:2px;padding:5px;overflow:hidden}
+ .admin-area .admin-nav-link{min-width:0;min-height:46px;flex-direction:column;justify-content:center;gap:2px;padding:4px;font-size:9.5px;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+ .admin-area .admin-nav-label{display:none}
+}
