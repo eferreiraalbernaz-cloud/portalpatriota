@@ -116,3 +116,10 @@ O fluxo do primeiro administrador deve ser executado somente em produção e uma
 O projeto Supabase e a infraestrutura Cloudflare estão provisionados. As credenciais privadas de infraestrutura ficam nos segredos do Worker. A conta Instagram, a aprovação do aplicativo Meta, a chave de IA e o primeiro acesso administrativo ainda dependem dos dados do proprietário. Até essas etapas, a sincronização permanece pausada e a publicação automática desativada. Não há scraping, notícias fictícias nem credenciais privadas no repositório.
 
 O cron importa mídia de até três páginas (300 itens) por rodada e drena a fila de redação em lotes curtos para respeitar o tempo das funções. O modelo pode errar; a camada editorial reduz o risco e envia casos incompletos para revisão, mas a revisão humana continua necessária para manter padrão jornalístico.
+
+## Monetização Monetag
+
+A preparação administrativa para **In-Page Push** está documentada em
+[docs/monetag-ipp.md](docs/monetag-ipp.md). Anúncios permanecem desativados:
+o Service Worker recebido não substitui a tag In-Page Push. Aplique a migração
+indicada no guia para usar a nova seção em Configurações.
