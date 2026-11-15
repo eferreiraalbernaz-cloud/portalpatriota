@@ -11,7 +11,7 @@ Acesso: `/admin/publicidade`, somente após autenticação administrativa.
 4. Confira título público, descrição e URL. Para artes que já contêm os textos,
    desmarque **Exibir título e descrição abaixo da imagem**.
 5. Escolha os locais e o peso do criativo. Confirme a autorização da imagem uma vez
-   e toque em **Publicar anúncio**. A primeira publicação habilita o anunciante.
+   e toque em **Publicar anúncio**. Publicar um anúncio também habilita o anunciante.
 6. Abra o portal para conferir. Uma recusa de publicidade já salva nesse navegador
    pode ser alterada em **Preferências de publicidade**, no rodapé.
 
