@@ -8,3 +8,7 @@
 .advertisement-copy p { margin: 0 0 16px; color: #53667d; font-size: 12px; line-height: 1.6; }
 .advertisement-copy > span { color: #0754bd; font-size: 11px; font-weight: 700; }
 .creative-preview { max-width: 360px; margin-top: 18px; }
+.own-ad img { aspect-ratio: auto; object-fit: contain; height: auto; }
+.managed-placement { margin: 24px 0; max-width: 720px; }
+.managed-sidebar { display:none; }
+@media(min-width:1100px){.article-layout:has(.managed-sidebar){grid-template-columns:minmax(0,660px) 280px;gap:40px}.managed-sidebar{display:block;max-width:280px}.article-rail .article-share{flex-direction:row;justify-content:center}.article-rail .article-share>span{writing-mode:initial;margin:0}}

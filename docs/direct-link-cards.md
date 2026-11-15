@@ -22,8 +22,8 @@ O In-Page Push 12271754 permanece independente e preservado.
    a ativação e salve. Novas visitas recebem a configuração atualizada.
 
 É possível salvar um rascunho desativado sem texto/imagem. Não há criativo padrão:
-nenhuma marca, oferta ou produto foi inventado. Editar imagem, título, descrição ou
-URL desmarca a revisão e a ativação no formulário; é preciso revisar novamente.
+nenhuma marca, oferta ou produto foi inventado. Substituir a imagem desmarca a revisão e a ativação no formulário; edições de
+texto preservam a confirmação existente.
 
 ## Exibição
 

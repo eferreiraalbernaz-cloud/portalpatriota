@@ -12,7 +12,7 @@ export function DirectLinkSettings({ initial }: { initial: CreativeAdminState })
   const [feedback, setFeedback] = useState<{ error: boolean; text: string } | null>(null);
   function update<K extends keyof DirectLinkCreative>(key: K, value: DirectLinkCreative[K]) {
     setCreative((previous) => ({ ...previous, [key]: value,
-      ...(["image_url", "title", "description", "target_url"].includes(key) ? { enabled: false, review_confirmed: false } : {}),
+      ...(key === "image_url" ? { enabled: false, review_confirmed: false } : {}),
     }));
   }
   async function upload(file?: File) {
@@ -44,7 +44,7 @@ export function DirectLinkSettings({ initial }: { initial: CreativeAdminState })
   return <section className="admin-panel settings-panel">
     <div className="panel-title-row"><div><span className="eyebrow">MONETIZAÇÃO · DIRECT LINK</span><h2>Cards publicitários</h2></div><span className={`status-pill ${savedEnabled ? "status-active" : "status-paused"}`}>{savedEnabled ? "CONFIGURAÇÃO HABILITADA" : "CARDS DESATIVADOS"}</span></div>
     <p className="panel-intro">Um card identificado como PUBLICIDADE após cada quatro notícias; nas grades com uma a três notícias, no máximo um card ao final. Nenhuma notícia é substituída. O link só abre por clique voluntário.</p>
-    <p className="inline-note">O Direct Link pode selecionar ofertas diferentes por visitante. Use apenas um criativo autorizado e compatível com essa variação. Não anuncie marcas, produtos ou condições que não estejam confirmados. Alterar o conteúdo exige nova revisão e ativação.</p>
+    <p className="inline-note">O Direct Link pode selecionar ofertas diferentes por visitante. Use apenas um criativo autorizado e compatível com essa variação. Não anuncie marcas, produtos ou condições que não estejam confirmados. Substituir a imagem exige nova revisão e ativação.</p>
     {initial.error && <p role="alert" className="form-error">{initial.error}</p>}
     <div className="settings-fields">
       <label className="settings-wide">Enviar imagem publicitária<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={busy || !initial.storageReady} onChange={(event) => { void upload(event.target.files?.[0]); event.target.value = ""; }}/><small>Use uma imagem real e autorizada. JPG, PNG, WebP ou AVIF de até 8 MB; prefira proporção 3:2.</small></label>

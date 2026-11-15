@@ -24,6 +24,6 @@ export default async function CategoryPage({ params }: Props) {
   return <main className="category-page container">
     <div className="breadcrumb"><Link href="/">Início</Link><span>/</span><span>{category.name}</span></div>
     <div className="category-page-heading"><div><span className="eyebrow">EDITORIA</span><h1>{category.label}<span>.</span></h1><p>As notícias de {category.label.toLocaleLowerCase("pt-BR")} publicadas pelo Portal Patriota BR.</p></div><span className="category-page-number">{String(articles.length).padStart(2, "0")} <small>MATÉRIAS</small></span></div>
-    {articles.length ? <NewsGrid articles={articles} creative={creative} featureFirst className="category-news-grid"/> : <EmptyState title={`Ainda não há notícias em ${category.label}.`} detail="As matérias desta editoria aparecerão aqui assim que forem publicadas."/>}
+    {articles.length ? <NewsGrid articles={articles} creative={creative} featureFirst placement="category" className="category-news-grid"/> : <EmptyState title={`Ainda não há notícias em ${category.label}.`} detail="As matérias desta editoria aparecerão aqui assim que forem publicadas."/>}
   </main>;
 }

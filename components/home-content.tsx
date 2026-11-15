@@ -24,7 +24,7 @@ export function HomeContent({ articles, settings, creative }: { articles: Articl
 
     <section className="container latest-section" id="ultimas">
       <div className="section-heading"><div><span className="eyebrow">ACOMPANHE O QUE IMPORTA</span><h2>Últimas notícias</h2></div><span className="section-count">{String(articles.length).padStart(2,"0")} <small>MATÉRIAS</small></span></div>
-      {rest.length ? <NewsGrid articles={rest.slice(0, 6)} creative={creative}/> : <EmptyState title={lead ? "Você está em dia." : "Nenhuma notícia publicada ainda."} detail={lead ? "Volte em breve para acompanhar as próximas atualizações." : "Quando uma matéria for publicada, ela será exibida automaticamente nesta seção."}/>}
+      {rest.length ? <NewsGrid articles={rest.slice(0, 6)} creative={creative} placement="home"/> : <EmptyState title={lead ? "Você está em dia." : "Nenhuma notícia publicada ainda."} detail={lead ? "Volte em breve para acompanhar as próximas atualizações." : "Quando uma matéria for publicada, ela será exibida automaticamente nesta seção."}/>}
     </section>
 
     <section className="category-band"><div className="container category-band-inner"><div><span className="eyebrow">ESCOLHA SUA EDITORIA</span><h2>O Brasil por diferentes ângulos.</h2></div><div className="category-pills">{CATEGORIES.map((category, index) => <Link key={category.slug} href={`/${category.slug}`}><span>0{index + 1}</span>{category.name}<b>↗</b></Link>)}</div></div></section>
@@ -32,7 +32,7 @@ export function HomeContent({ articles, settings, creative }: { articles: Articl
     {CATEGORIES.map((category) => {
       const categoryArticles = articles.filter((article) => article.category === category.name).slice(0, 3);
       if (!categoryArticles.length) return null;
-      return <section className="container category-feed" key={category.slug}><div className="section-heading"><div><span className="eyebrow">EDITORIA</span><h2>{category.label}</h2></div><Link className="text-link" href={`/${category.slug}`}>Ver todas <span>↗</span></Link></div><NewsGrid articles={categoryArticles} creative={creative}/></section>;
+      return <section className="container category-feed" key={category.slug}><div className="section-heading"><div><span className="eyebrow">EDITORIA</span><h2>{category.label}</h2></div><Link className="text-link" href={`/${category.slug}`}>Ver todas <span>↗</span></Link></div><NewsGrid articles={categoryArticles} creative={creative} placement="home"/></section>;
     })}
   </main>;
 }
