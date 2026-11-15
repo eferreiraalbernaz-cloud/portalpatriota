@@ -1,0 +1,10 @@
+.advertisement-card { min-width: 0; align-self: stretch; border: 1px solid #dbe1e9; border-radius: 3px; background: #f8fafc; overflow: hidden; }
+.advertisement-label { display: block; padding: 10px 14px; color: #526379; font-size: 10px; font-weight: 700; letter-spacing: .13em; border-bottom: 1px solid #e5eaf0; }
+.advertisement-card > a { display: block; height: calc(100% - 34px); color: inherit; text-decoration: none; }
+.advertisement-card > a:focus-visible { outline: 3px solid #0754bd; outline-offset: -3px; }
+.advertisement-card img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.advertisement-copy { padding: 17px 15px; overflow-wrap: anywhere; }
+.advertisement-copy h3 { margin: 0 0 9px; color: #092a59; font-family: var(--sans); font-size: 18px; line-height: 1.3; }
+.advertisement-copy p { margin: 0 0 16px; color: #53667d; font-size: 12px; line-height: 1.6; }
+.advertisement-copy > span { color: #0754bd; font-size: 11px; font-weight: 700; }
+.creative-preview { max-width: 360px; margin-top: 18px; }

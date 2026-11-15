@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AD_PREFERENCES_EVENT } from "@/lib/ads/direct-link";
 import "./monetag-advertising.css";
 import { useEffect, useState } from "react";
 import {
@@ -84,6 +85,7 @@ export function MonetagAdvertising({ siteOrigin, requireConsent }: { siteOrigin:
   function choose(accepted: boolean) {
     const value: AdConsent = { version: 1, accepted, expires: Date.now() + AD_CONSENT_LIFETIME };
     try { localStorage.setItem(AD_CONSENT_KEY, JSON.stringify(value)); } catch { /* Consent applies to this visit only. */ }
+    window.dispatchEvent(new Event(AD_PREFERENCES_EVENT));
     if (!accepted && window.__portalMonetagStarted) {
       window.location.reload();
       return;

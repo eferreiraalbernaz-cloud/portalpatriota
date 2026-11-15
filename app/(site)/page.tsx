@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPublicCreative } from "@/lib/ads/config";
 import { HomeContent } from "@/components/home-content";
 import { getPortalSettings, getPublishedArticles } from "@/lib/articles";
 
@@ -12,6 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [articles, settings] = await Promise.all([getPublishedArticles({ limit: 40 }), getPortalSettings()]);
-  return <HomeContent articles={articles} settings={settings}/>;
+  const [articles, settings, creative] = await Promise.all([getPublishedArticles({ limit: 40 }), getPortalSettings(), getPublicCreative()]);
+  return <HomeContent articles={articles} settings={settings} creative={creative}/>;
 }
