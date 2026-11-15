@@ -43,7 +43,7 @@ export function SiteHeader({ siteName, logoUrl }: { siteName: string; logoUrl: s
         <Link href="/" onClick={() => setMenuOpen(false)}><span>Início</span><span>↗</span></Link>
         {CATEGORIES.map((category, index) => <Link key={category.slug} href={`/${category.slug}`} onClick={() => setMenuOpen(false)}><span>{category.name}</span><small>0{index + 1}</small></Link>)}
       </nav>
-      <div className="side-menu-bottom"><span>ACESSO RESTRITO</span><Link href="/admin/login" onClick={() => setMenuOpen(false)}>É um administrador desta página?</Link></div>
+      <div className="side-menu-bottom"><span>ACESSO RESTRITO</span><a href="/admin/login">É um administrador desta página?</a></div>
     </aside>
 
     {searchOpen && <div className="search-overlay" role="dialog" aria-modal="true" aria-label="Pesquisar notícias">

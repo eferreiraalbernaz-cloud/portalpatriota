@@ -1,0 +1,12 @@
+.advertising-preferences { padding-top: 12px; padding-bottom: 12px; }
+.advertising-preferences button { background: none; border: 0; padding: 8px 0; color: var(--navy); font: inherit; font-size: 12px; text-decoration: underline; cursor: pointer; }
+.advertising-consent { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; gap: 24px; padding: 18px max(18px, calc((100vw - 1180px) / 2)); border-top: 1px solid #dbe1e9; background: #fff; box-shadow: 0 -4px 20px #092a5914; max-height: 60dvh; overflow-y: auto; color: var(--ink); }
+.advertising-consent strong { color: var(--navy); font-size: 14px; }
+.advertising-consent p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; }
+.advertising-consent a { text-decoration: underline; }
+.advertising-consent-actions { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+.advertising-consent-actions .button { white-space: normal; text-align: center; }
+@media (max-width: 760px) {
+  .advertising-consent { flex-direction: column; align-items: stretch; gap: 12px; padding-bottom: max(18px, env(safe-area-inset-bottom)); }
+  .advertising-consent-actions { display: grid; grid-template-columns: 1fr 1fr; }
+}

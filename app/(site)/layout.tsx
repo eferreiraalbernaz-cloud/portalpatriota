@@ -1,6 +1,8 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPortalSettings } from "@/lib/articles";
+import { getSiteUrl } from "@/lib/config";
+import { MonetagAdvertising } from "@/components/monetag-advertising";
 
 export const dynamic = "force-dynamic";
 
@@ -11,5 +13,6 @@ export default async function SiteLayout({ children }: Readonly<{ children: Reac
     <SiteHeader siteName={settings.site_name} logoUrl={settings.logo_url}/>
     {children}
     <SiteFooter settings={settings}/>
+    {process.env.MONETAG_IPP_DISABLED !== "true" && <MonetagAdvertising siteOrigin={getSiteUrl()}/>}
   </>;
 }
