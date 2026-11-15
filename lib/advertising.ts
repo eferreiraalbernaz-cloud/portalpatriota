@@ -6,6 +6,16 @@ export const AD_CONSENT_LIFETIME = 180 * 24 * 60 * 60 * 1000;
 
 export type AdConsent = { version: 1; accepted: boolean; expires: number };
 
+export function requiresAdvertisingConsent(country: string | null) {
+  // Only Brazil uses automatic display. Unknown locations keep the opt-in flow.
+  return country !== "BR";
+}
+
+export function isAdvertisingAllowed(consent: AdConsent | null, requireConsent: boolean) {
+  // Automatic display is not recorded as consent; any saved refusal still wins.
+  return consent ? consent.accepted : !requireConsent;
+}
+
 export function parseAdConsent(raw: string | null, now = Date.now()): AdConsent | null {
   try {
     const value = JSON.parse(raw || "null");

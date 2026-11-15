@@ -8,12 +8,28 @@ const moduleUnderTest = { exports: {} };
 vm.runInNewContext(ts.transpileModule(readFileSync(require.resolve("../lib/advertising.ts"), "utf8"), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText, { module: moduleUnderTest, exports: moduleUnderTest.exports, URL });
-const { parseAdConsent, canLoadAdvertising, MONETAG_ZONE, MONETAG_SCRIPT_URL } = moduleUnderTest.exports;
+const { parseAdConsent, canLoadAdvertising, requiresAdvertisingConsent, isAdvertisingAllowed, MONETAG_ZONE, MONETAG_SCRIPT_URL } = moduleUnderTest.exports;
 
-test("missing, malformed, old or expired consent never authorizes advertising", () => {
+test("missing, malformed, old or expired consent is never treated as an acceptance", () => {
   for (const raw of [null, "bad", "{}", "null", JSON.stringify({ version: 1, accepted: "true", expires: 2000 }),
     JSON.stringify({ version: 0, accepted: true, expires: 2000 }), JSON.stringify({ version: 1, accepted: true, expires: 1000 })]) {
     assert.equal(parseAdConsent(raw, 1000), null);
+  }
+});
+
+test("only known Brazilian visits use automatic advertising", () => {
+  assert.equal(requiresAdvertisingConsent("BR"), false);
+  for (const country of [null, "", "XX", "T1", "PT", "DE", "GB", "US", "br", "BRA"]) {
+    assert.equal(requiresAdvertisingConsent(country), true);
+  }
+});
+
+test("automatic display does not override refusals or pretend to be consent", () => {
+  assert.equal(isAdvertisingAllowed(null, false), true);
+  assert.equal(isAdvertisingAllowed(null, true), false);
+  for (const requireConsent of [true, false]) {
+    assert.equal(isAdvertisingAllowed({ version: 1, accepted: false, expires: 2000 }, requireConsent), false);
+    assert.equal(isAdvertisingAllowed({ version: 1, accepted: true, expires: 2000 }, requireConsent), true);
   }
 });
 

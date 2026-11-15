@@ -1,9 +1,10 @@
 import app from '../.open-next/worker.js';
+import { withViewerCountry } from './viewer-country.js';
 export * from '../.open-next/worker.js';
 
 export default {
   fetch(request, env, ctx) {
-    return app.fetch(request, env, ctx);
+    return app.fetch(withViewerCountry(request), env, ctx);
   },
   async scheduled(controller, env, ctx) {
     if (!env.CRON_SECRET || !(env.SUPABASE_SECRET_KEY || env.SUPABASE_SERVICE_ROLE_KEY)) {
